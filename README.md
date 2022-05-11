@@ -34,9 +34,5 @@ optional arguments:
                         Number of threads running the program
 ```
 
-# 关于我
-
  * Author:王松_Striker
  * Team:安全盒子团队
- * QQ:954101430
- * Email:[song@secbox.cn](mailto:song@secbox.cn)
