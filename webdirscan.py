@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 import time
-import Queue
+import queue
 import argparse
 import requests
 import threading
@@ -10,9 +10,9 @@ import threading
 class Dirscan(object):
 
     def __init__(self, scanSite, scanDict, scanOutput,threadNum):
-        print 'Dirscan is running!'
+        print ('Dirscan is running!')
         self.scanSite = scanSite if scanSite.find('://') != -1 else 'http://%s' % scanSite
-        print 'Scan target:',self.scanSite
+        print ('Scan target:',self.scanSite)
         self.scanDict = scanDict
         self.scanOutput = scanSite.rstrip('/').replace('https://', '').replace('http://', '')+'.txt' if scanOutput == 0 else scanOutput
         truncate = open(self.scanOutput,'w')
@@ -25,15 +25,15 @@ class Dirscan(object):
         self.STOP_ME = False
 
     def _loadDict(self, dict_list):
-        self.q = Queue.Queue()
+        self.q = queue.Queue()
         with open(dict_list) as f:
             for line in f:
                 if line[0:1] != '#':
                     self.q.put(line.strip())
         if self.q.qsize() > 0:
-            print 'Total Dictionary:',self.q.qsize()
+            print ('Total Dictionary:',self.q.qsize())
         else:
-            print 'Dict is Null ???'
+            print ('Dict is Null ???')
             quit()
 
     def _loadHeaders(self):
@@ -63,7 +63,7 @@ class Dirscan(object):
         finally:
             if html_result != 0:
                 if html_result.status_code == 200 and html_result.text != self.notFoundPageText:
-                    print '[%i]%s' % (html_result.status_code, html_result.url)
+                    print ('[%i]%s' % (html_result.status_code, html_result.url))
                     self._writeOutput('[%i]%s' % (html_result.status_code, html_result.url))
 
 
@@ -93,8 +93,8 @@ if __name__ == '__main__':
         else:
             try:
                 time.sleep(0.1)
-            except KeyboardInterrupt, e:
-                print '\n[WARNING] User aborted, wait all slave threads to exit, current(%i)' % threading.activeCount()
+            except KeyboardInterrupt:
+                print ('\n[WARNING] User aborted, wait all slave threads to exit, current(%i)' % threading.activeCount())
                 scan.STOP_ME = True
 
-    print 'Scan end!!!'
+    print ('Scan end!!!')
